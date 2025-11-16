@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার কোডিং পরীক্ষা (ফলাফল সেভ)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* --- ভেরিয়েবল এবং বেসিক স্টাইল --- */
+        :root {
+            --primary-color: #4A90E2; /* উজ্জ্বল নীল (লাইট মোড) */
+            --primary-dark: #357ABD;
+            --secondary-color: #6C7A89;
+            --bg-light: #F7F9FC; /* খুব হালকা ধূসর */
+            --bg-white: #FFFFFF;
+            --text-dark: #1E2B38;
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius-large: 12px;
+            --font-main: 'Montserrat', sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        /* --- ডার্ক থিম ভেরিয়েবল --- */
+        body.dark-theme {
+            --primary-color: #00C4CC; /* ফিরোজা/আকাশী নীল (ডার্ক মোড) */
+            --primary-dark: #00A3A8; /* গাঢ় ফিরোজা */
+            --bg-light: #1A1A2E; /* গাঢ় ব্যাকগ্রাউন্ড */
+            --bg-white: #1F203A; /* কার্ডের ব্যাকগ্রাউন্ড */
+            --text-dark: #E0E0E0; /* টেক্সটের রঙ */
+            --secondary-color: #A0A0B0;
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        body {
+            font-family: var(--font-main); 
+            background-color: var(--bg-light); 
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: var(--text-dark); 
+            transition: background-color 0.4s, color 0.4s;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px; 
+            min-height: calc(100vh - 80px);
+            box-sizing: border-box;
+            transition: background-color 0.4s;
+        }
+
+        /* --- ফ্লোটিং হেডার নেভিগেশন --- */
+        .header-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            transition: background-color 0.4s, box-shadow 0.4s;
+        }
+        
+        .logo-title {
+            margin-right: auto;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* --- মেনু স্টাইল --- */
+        .menu-dropdown {
+            position: relative;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color); 
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: var(--border-radius-large); 
+            transition: background-color 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: var(--bg-white);
+            min-width: 250px; 
+            box-shadow: var(--shadow-light); 
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .menu-content a {
+            color: var(--text-dark);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            transition: background-color 0.2s;
+        }
+        .menu-content a:hover {
+            background-color: var(--bg-light);
+        }
+        
+        /* মেনু কন্টেন্ট দেখানোর জন্য */
+        .menu-dropdown:hover .menu-content {
+            display: block;
+        }
+        
+        /* --- পেজ স্টাইল --- */
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            min-height: calc(100vh - 80px - 40px); 
+            box-sizing: border-box;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* --- শিরোনাম --- */
+        h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 30px; 
+            font-size: 2.5em; 
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        /* --- হোম পেজ --- */
+        #home-page.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .home-content {
+            width: 100%;
+            max-width: 400px; 
+            padding: 30px;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-large);
+            box-shadow: var(--shadow-light);
+        }
+        
+        /* --- বাটন স্টাইল --- */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1em; 
+            font-weight: 600;
+            color: #ffffff;
+            background-image: linear-gradient(45deg, var(--primary-color) 0%, var(--primary-dark) 100%); 
+            border: none;
+            border-radius: 10px; 
+            cursor: pointer;
+            margin-bottom: 15px;
+            text-align: center;
+            text-decoration: none;
+            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover:not(.disabled) {
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); 
+        }
+
+        .btn-secondary {
+            background-image: linear-gradient(45deg, var(--secondary-color) 0%, #495057 100%);
+        }
+        
+        /* --- কোডিং ও আউটপুট লেআউট --- */
+        .code-output-grid {
+            display: flex; 
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* --- আউটপুট এরিয়া (ফুল চওড়া এবং লম্বা) --- */
+        #output-area, #output-view-area {
+            width: 100%; 
+            height: 90vh; 
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            background-color: var(--bg-light);
+            transition: background-color 0.4s, border-color 0.4s;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* --- ইনপুট এবং টেক্সটএরিয়া স্টাইল --- */
+        #code-editor,
+        #title-input {
+            width: 100%;
+            padding: 15px; 
+            border: 1px solid #ced4da; 
+            border-radius: 8px;
+            font-family: var(--font-code); 
+            font-size: 16px;
+            box-sizing: border-box;
+            resize: vertical;
+            min-height: 400px;
+            margin-bottom: 20px; 
+            transition: all 0.3s ease;
+            outline: none; 
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+        }
+        
+        #title-input {
+            min-height: 50px;
+            font-family: var(--font-main);
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        /* --- সেভ সেকশন --- */
+        #save-section {
+            padding: 20px;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-large);
+            box-shadow: var(--shadow-light);
+            margin-top: 0; 
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        /* --- সেভ করা আইটেম স্টাইল --- */
+        #saved-files-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .saved-item-container {
+             background-color: var(--bg-white);
+             border: 1px solid rgba(0,0,0,0.05);
+             border-left: 5px solid var(--primary-color);
+             border-radius: 10px;
+             padding: 15px 20px;
+             margin-bottom: 15px;
+             cursor: pointer;
+             transition: all 0.3s ease;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* --- আউটপুট ভিউ পেজের জন্য বিশেষ স্টাইল --- */
+        #only-output-page h2 {
+            display: none; 
+        }
+        #only-output-page .container-wrapper {
+            padding: 0; 
+            width: 100%;
+            height: calc(100vh - 80px); 
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #only-output-page #output-view-area {
+            flex-grow: 1;
+            width: 100%;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            margin-bottom: 10px;
+        }
+        #only-output-page .control-buttons {
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+        #only-output-page .control-buttons .btn {
+             width: 48%; 
+             margin: 0 5px;
+        }
+        
+        /* --- মডাল স্টাইল --- */
+        .modal {
+            display: none; /* বাই ডিফল্ট হাইড থাকবে */
+            position: fixed; 
+            z-index: 20; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); /* কালো ব্যাকগ্রাউন্ড */
+        }
+        .modal-content {
+            background-color: var(--bg-white);
+            margin: 5% auto; /* উপরে মার্জিন কমানো হলো */
+            padding: 30px; 
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            width: 90%; 
+            max-width: 800px; 
+            border-radius: var(--border-radius-large); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .close-btn {
+            color: var(--secondary-color);
+            float: right;
+            font-size: 36px; 
+            font-weight: 300;
+            line-height: 1; 
+            position: absolute; 
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+    </style>
+</head>
+<body onload="checkInitialState()">
+    
+    <header class="header-nav">
+        <div class="logo-title">
+            <i class="fas fa-rocket"></i> কোডিং হাব
+        </div>
+        <div class="menu-dropdown">
+            <button class="menu-btn">
+                মেনু <i class="fas fa-bars"></i>
+            </button>
+            <div class="menu-content">
+                <a href="#" id="dark-theme-toggle"><i class="fas fa-moon"></i> ডার্ক থিম</a>
+                
+                <a href="https://mobidrive.com/sharelink/w/1wweuvR5xho6Js56vCID43429BXasX6GvsHSqrpZz17m" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-link"></i> Ai Promt content
+                </a>
+                
+                <a href="#" id="show-usage-rules"><i class="fas fa-info-circle"></i> ব্যবহার বিধি</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+
+        <div id="home-page" class="page active">
+            <div class="home-content">
+                <h2>আপনাকে স্বাগতম!</h2>
+                
+                <div id="storage-warning" class="alert-box" style="display:none;">
+                    <strong><i class="fas fa-exclamation-triangle"></i> সতর্কতা: সেভ কাজ করছে না!</strong>
+                    <p>আপনার ব্রাউজার (Chrome/Android) সুরক্ষার কারণে সেভ করা ব্লক করেছে। সেভ এবং লোড করতে **Mozilla Firefox** ব্যবহার করুন বা একটি লোকাল সার্ভার সেটআপ করুন।</p>
+                </div>
+
+                <button id="start-btn" class="btn"><i class="fas fa-play-circle"></i> পরীক্ষা শুরু করা যাক</button>
+                <button id="saved-files-btn" class="btn btn-secondary"><i class="fas fa-folder-open"></i> সেভ করা ফাইল</button>
+            </div>
+        </div>
+
+        <div id="coding-page" class="page">
+            <h2>কোড এডিটর <i class="fas fa-laptop-code"></i></h2>
+            <p>এখানে HTML, CSS এবং JavaScript কোড লিখতে পারবেন।</p>
+            
+            <textarea id="code-editor" placeholder="আপনার কোড এখানে লিখুন..."></textarea> 
+
+            <button id="next-step-btn" class="btn"><i class="fas fa-arrow-right"></i> পরের ধাপ (আউটপুট দেখুন)</button>
+            
+            <button class="btn btn-secondary" onclick="showPage('home-page')"><i class="fas fa-home"></i> হোম পেজে ফিরুন</button>
+        </div>
+        
+        <div id="only-output-page" class="page">
+            <div class="container-wrapper">
+                <h2>কোডের ফলাফল</h2>
+                
+                <iframe id="output-view-area" title="Code Output View"></iframe>
+                
+                <div class="control-buttons">
+                    <button class="btn btn-secondary" onclick="showPage('home-page')"><i class="fas fa-home"></i> হোম</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="output-page" class="page">
+            <h2>আউটপুট ও সেভ</h2> 
+            
+            <div class="code-output-grid">
+                <iframe id="output-area" title="Code Output"></iframe>
+                
+                <div id="save-section">
+                    <h3><i class="fas fa-save"></i> ফলাফল সেভ করুন</h3>
+                    <input type="text" id="title-input" placeholder="আপনার পরীক্ষার ফলাফলের একটি শিরোনাম দিন...">
+                    <button id="save-output-btn" class="btn"><i class="fas fa-check"></i> ফলাফল সেভ করুন</button>
+                    
+                    <button id="edit-code-btn" class="btn btn-secondary"><i class="fas fa-edit"></i> কোড সম্পাদনা করুন</button>
+                    <button class="btn btn-secondary" onclick="showPage('home-page')"><i class="fas fa-home"></i> হোম পেজে ফিরুন</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="saved-files-page" class="page">
+            <h2>সেভ করা ফলাফল <i class="fas fa-list-alt"></i></h2>
+            <ul id="saved-files-list">
+                </ul>
+            <button class="btn btn-secondary" onclick="showPage('home-page')"><i class="fas fa-home"></i> হোম পেজে ফিরুন</button>
+        </div>
+
+    </div>
+    
+    <div id="app-footer" class="app-footer">
+        Created by **Tamim** 🚀 | <i class="far fa-copyright"></i> 2025
+    </div>
+    
+    <div id="usageModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closeUsageModalBtn">&times;</span>
+        <h3>ব্যবহার বিধি 📘</h3>
+        <p>প্রথমে Ai promt content অপশনে গিয়ে ফাইলটি ডাউনলোড করবেন।সরাসরি ফাইলটি দিয়ে জেমিনিতে জেম অপশনে ফাইলটি আপলোড করে জেম তৈরী করতে পারবেন।অথবা ফাইলটিতে থাকা লেখা হুবহু কপি করে চ্যাটজিপিটিতে Gpts বা জেমিনি তে Gem তৈরী করতে পারবেন।এর ফলে সেখান থেকে প্রশ্ন তৈরি করতে বললে Ai আপনাকে কোডিং দিবে।সেটা কপি করে এই অ্যাপ এ পেস্ট করলেই পরীক্ষা দিতে পারবেন।ধন্যবাদ</p>
+      </div>
+    </div>
+    
+    <script>
+        // --- এলিমেন্ট সিলেক্ট করা ---
+        const body = document.body;
+        const pages = document.querySelectorAll('.page');
+        const appFooter = document.getElementById('app-footer'); 
+        const codeEditor = document.getElementById('code-editor');
+        const outputArea = document.getElementById('output-area');
+        const outputViewArea = document.getElementById('output-view-area'); 
+        const titleInput = document.getElementById('title-input');
+        const storageWarning = document.getElementById('storage-warning');
+        const savedFilesBtn = document.getElementById('saved-files-btn');
+        const saveOutputBtn = document.getElementById('save-output-btn'); 
+
+        // মেনু এবং মডাল এলিমেন্ট
+        const darkThemeToggle = document.getElementById('dark-theme-toggle');
+        const showUsageRules = document.getElementById('show-usage-rules');
+        const usageModal = document.getElementById('usageModal');
+        const closeUsageModalBtn = document.getElementById('closeUsageModalBtn'); 
+
+        const STORAGE_KEY = 'codingExamResults'; 
+        const THEME_KEY = 'appTheme';
+        const LAST_RAW_CODE_KEY = 'lastRawCode'; // কাঁচা কোড সেভ করার জন্য
+        let localStorageAvailable = false; 
+
+        // --- লোকাল স্টোরেজ পরীক্ষা ও থিম লোড ---
+        function checkLocalStorage() {
+            try {
+                const test = 'test';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                localStorageAvailable = true;
+            } catch (e) {
+                localStorageAvailable = false;
+                storageWarning.style.display = 'block';
+                // সেভ বাটন ডিজেবল করা
+                savedFilesBtn.onclick = (e) => { e.preventDefault(); alert('সেভ অপশনটি ব্লক করা হয়েছে।'); };
+                saveOutputBtn.onclick = (e) => { e.preventDefault(); alert('সেভ অপশনটি ব্লক করা হয়েছে।'); };
+            }
+            loadTheme(); // থিম লোড সবসময় হবে
+            showPage('home-page'); // নিশ্চিত করুন হোম পেজটি খোলা আছে
+        }
+        
+        // --- থিম লোড ফাংশন ---
+        function loadTheme() {
+            if (localStorageAvailable) {
+                const savedTheme = localStorage.getItem(THEME_KEY);
+                if (savedTheme === 'dark') {
+                    body.classList.add('dark-theme');
+                } else {
+                    body.classList.remove('dark-theme');
+                }
+            }
+            updateThemeToggleIcon();
+        }
+        
+        // --- থিম টগল আইকন আপডেট ---
+        function updateThemeToggleIcon() {
+            const isDark = body.classList.contains('dark-theme');
+            // ডার্ক থিম থাকলে সান, না হলে মুন
+            darkThemeToggle.innerHTML = isDark 
+                ? '<i class="fas fa-sun"></i> লাইট থিম' 
+                : '<i class="fas fa-moon"></i> ডার্ক থিম';
+        }
+
+        // --- ইভেন্ট লিসেনার সেটআপ ---
+        darkThemeToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            body.classList.toggle('dark-theme');
+            updateThemeToggleIcon();
+            
+            if (localStorageAvailable) {
+                if (body.classList.contains('dark-theme')) {
+                    localStorage.setItem(THEME_KEY, 'dark');
+                } else {
+                    localStorage.setItem(THEME_KEY, 'light');
+                }
+            }
+        });
+        
+        // --- মডাল লজিক ---
+        showUsageRules.addEventListener('click', (e) => {
+            e.preventDefault();
+            usageModal.style.display = 'block';
+        });
+
+        closeUsageModalBtn.addEventListener('click', () => {
+            usageModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === usageModal) {
+                usageModal.style.display = 'none';
+            }
+        });
+        
+        // **শুরুতেই কল করা ফাংশন**
+        function checkInitialState() {
+            checkLocalStorage();
+        }
+
+        // --- পেজ দেখানোর ফাংশন (গুরুত্বপূর্ণ) ---
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (pageId === 'home-page') {
+                appFooter.style.display = 'block';
+            } else {
+                appFooter.style.display = 'none';
+            }
+        }
+
+        // --- লোকাল স্টোরেজ ইউটিলিটি ---
+        function getSavedResults() {
+            if (!localStorageAvailable) return [];
+            try {
+                const results = localStorage.getItem(STORAGE_KEY);
+                return results ? JSON.parse(results) : [];
+            } catch (e) {
+                console.error("Error reading results from localStorage:", e);
+                return [];
+            }
+        }
+
+        function saveResults(results) {
+            if (!localStorageAvailable) return;
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
+            } catch (e) {
+                console.error("Error writing results to localStorage:", e);
+            }
+        }
+        
+        // --- প্রধান বাটন ইভেন্ট লিসেনার্স ---
+
+        // পরীক্ষা শুরু
+        document.getElementById('start-btn').addEventListener('click', () => {
+            outputArea.srcdoc = ''; 
+            titleInput.value = '';
+            codeEditor.value = ''; // এডিটর খালি করা হয়েছে
+            showPage('coding-page');
+        });
+
+        // সেভ করা ফাইলস
+        if (!savedFilesBtn.hasAttribute('disabled')) {
+            savedFilesBtn.addEventListener('click', () => {
+                loadSavedResults();
+                showPage('saved-files-page');
+            });
+        }
+        
+        // পরের ধাপ (কোড রান ও আউটপুট)
+        document.getElementById('next-step-btn').addEventListener('click', () => {
+            const userCode = codeEditor.value;
+            
+            // কাঁচা কোডটি সেভ করা হচ্ছে, যাতে সেভ করতে ব্যর্থ হলে এটি ব্যবহার করা যায়
+            if(localStorageAvailable) {
+                localStorage.setItem(LAST_RAW_CODE_KEY, userCode);
+            }
+
+            // আউটপুট এরিয়াতে কোড রান করা
+            outputArea.contentDocument.open();
+            outputArea.contentDocument.write(userCode);
+            outputArea.contentDocument.close();
+            
+            document.getElementById('title-input').value = ''; 
+            showPage('output-page');
+        });
+
+        // কোড সম্পাদনা করুন
+        document.getElementById('edit-code-btn').addEventListener('click', () => {
+            // সেভ করা শেষ কাঁচা কোডটি লোড করা হচ্ছে
+            const lastCode = localStorageAvailable ? localStorage.getItem(LAST_RAW_CODE_KEY) : codeEditor.value;
+            if (lastCode) {
+                codeEditor.value = lastCode;
+            } else {
+                codeEditor.value = ''; // যদি কোনো কোড না থাকে, তবে খালি থাকবে
+            }
+            showPage('coding-page');
+        });
+
+
+        // ফলাফল সেভ করুন (ফাইল সেভ সমস্যার সমাধান এখানে)
+        if (!saveOutputBtn.hasAttribute('disabled')) {
+            saveOutputBtn.addEventListener('click', () => {
+                const title = document.getElementById('title-input').value.trim();
+                
+                if (!title) {
+                    alert('অনুগ্রহ করে একটি শিরোনাম দিন।');
+                    return;
+                }
+                
+                let outputHTML = '';
+                // Raw Code নেওয়া হচ্ছে, যা fallback হিসাবে ব্যবহৃত হবে
+                const rawCode = localStorageAvailable ? localStorage.getItem(LAST_RAW_CODE_KEY) : codeEditor.value;
+
+                try {
+                    // IFRAME এর সম্পূর্ণ কন্টেন্ট (HTML) নেওয়া হচ্ছে
+                    outputHTML = outputArea.contentDocument.documentElement.outerHTML;
+                    
+                    if (!outputHTML || outputHTML.length < 100) { 
+                         // যদি কন্টেন্ট খুব ছোট হয়, ধরে নেব রান হয়নি বা ভুল হয়েছে।
+                         alert('সেভ করার জন্য কোনো ফলাফল পাওয়া যায়নি। কোডটি কি চালানো হয়েছে?');
+                         return;
+                    }
+                } catch (e) {
+                     // FIX: Same-Origin Policy Error (local file issue)
+                     if (e.name === 'SecurityError' || e.message.includes('SecurityError')) {
+                         const userConfirmed = confirm(
+                            `⚠️ সেভ করতে ব্যর্থ: ব্রাউজার সিকিউরিটি (Same-Origin Policy) কারণে local drive (file://) থেকে iframe-এর কন্টেন্ট পড়া যাচ্ছে না।\n\nআপনি কি এর পরিবর্তে কোড এডিটরে দেওয়া **কাঁচা কোডটি (Raw Code)** সেভ করতে চান? এই কোড লোড করলে আবার ফলাফল দেখাবে।`
+                         );
+
+                         if (!userConfirmed) return;
+                         
+                         outputHTML = rawCode; // ফলব্যাক: কাঁচা কোড সেভ করা
+                         
+                     } else {
+                         alert('একটি অজানা ত্রুটি হয়েছে: ' + e.message);
+                         return;
+                     }
+                }
+
+                const savedResults = getSavedResults();
+                const existingIndex = savedResults.findIndex(exam => exam.title === title);
+                
+                const newResult = {
+                    id: Date.now(), 
+                    title: title,
+                    output: outputHTML, // হুবহু সেভ হওয়া HTML (বা ফলব্যাক হিসাবে Raw Code)
+                    rawCode: rawCode // ভবিষ্যতের এডিটিংয়ের জন্য কাঁচা কোড
+                };
+
+                if (existingIndex !== -1) {
+                    if (!confirm(`"${title}" নামে একটি ফলাফল ইতিমধ্যেই সেভ করা আছে। আপনি কি এটি আপডেট করতে চান?`)) {
+                        return;
+                    }
+                    savedResults[existingIndex] = newResult; 
+                } else {
+                    savedResults.push(newResult);
+                }
+
+                saveResults(savedResults); 
+
+                alert('আপনার ফলাফল সফলভাবে সেভ হয়েছে!');
+                document.getElementById('title-input').value = '';
+                showPage('home-page');
+            });
+        }
+
+        // --- সেভ করা ফলাফলগুলো লিস্ট আকারে দেখানো ---
+        function loadSavedResults() {
+            document.getElementById('saved-files-list').innerHTML = '';
+            const savedResults = getSavedResults().reverse(); 
+            
+            if (savedResults.length === 0) {
+                document.getElementById('saved-files-list').innerHTML = '<li class="saved-item-container">কোনো সেভ করা ফলাফল নেই।</li>';
+                return;
+            }
+
+            savedResults.forEach(result => {
+                const li = document.createElement('li');
+                li.className = 'saved-item-container';
+                const saveDate = new Date(result.id).toLocaleDateString('bn-BD'); 
+                li.innerHTML = `
+                    <span class="saved-item-title" title="ক্লিক করে সরাসরি ফলাফল দেখুন">
+                        ${result.title} 
+                        <small style="margin-left: 10px; color: var(--secondary-color); font-weight: 400;">(${saveDate})</small>
+                    </span>
+                    <div class="saved-item-actions">
+                         <button class="delete-btn" data-id="${result.id}"><i class="fas fa-trash-alt"></i> মুছুন</button>
+                    </div>
+                `;
+
+                li.querySelector('.saved-item-title').addEventListener('click', () => {
+                    showSavedOutput(result.output); 
+                });
+                
+                li.querySelector('.delete-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteResult(result.id);
+                });
+                
+                document.getElementById('saved-files-list').appendChild(li);
+            });
+        }
+        
+        // --- ফাংশন: সেভ করা আউটপুট/ফলাফল দেখানো ---
+        function showSavedOutput(outputHTML) {
+            outputViewArea.contentDocument.open();
+            outputViewArea.contentDocument.write(outputHTML); // হুবহু সেভ করা HTML লোড হবে
+            outputViewArea.contentDocument.close();
+            
+            showPage('only-output-page');
+        }
+
+
+        // --- নির্দিষ্ট ফলাফল ডিলিট করা ---
+        function deleteResult(id) {
+            if (!confirm('আপনি কি এই ফলাফলটি মুছে ফেলতে নিশ্চিত?')) {
+                return;
+            }
+
+            let savedResults = getSavedResults();
+            savedResults = savedResults.filter(result => result.id != id); 
+            saveResults(savedResults);
+            loadSavedResults();
+        }
+
+    </script>
+</body>
+</html>
